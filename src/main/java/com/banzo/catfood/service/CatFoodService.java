@@ -8,7 +8,7 @@ public interface CatFoodService {
 
     Iterable<CatFood> findAll();
     Optional<CatFood> findById(Long id);
-    void save(CatFood catFood);
+    CatFood save(CatFood catFood);
     void deleteById(Long id);
     Iterable<CatFood> findByTypeId(Long id);
     Iterable<CatFood> findByName(String name);

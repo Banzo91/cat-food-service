@@ -30,8 +30,8 @@ public class CatFoodServiceImpl implements CatFoodService {
 
     @Transactional
     @Override
-    public void save(CatFood catFood) {
-        catFoodRepository.save(catFood);
+    public CatFood save(CatFood catFood) {
+        return catFoodRepository.save(catFood);
     }
 
     @Transactional
