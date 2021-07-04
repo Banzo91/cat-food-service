@@ -2,6 +2,8 @@ package com.banzo.catfood.controller;
 
 import com.banzo.catfood.model.CatFood;
 import com.banzo.catfood.service.CatFoodService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,15 +20,15 @@ public class CatFoodController {
     }
 
     @GetMapping("/products")
-    public Iterable<CatFood> getCatFoodItems() {
+    public ResponseEntity<Iterable<CatFood>> getCatFoodItems() {
 
         Iterable<CatFood> catFoodItems = catFoodService.findAll();
 
-        return catFoodItems;
+        return new ResponseEntity<>(catFoodItems, HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}")
-    public CatFood getCatFood(@PathVariable Long id) {
+    public ResponseEntity<CatFood> getCatFood(@PathVariable Long id) {
 
         Optional<CatFood> catFood = catFoodService.findById(id);
 
@@ -34,20 +36,20 @@ public class CatFoodController {
             throw new RuntimeException("Product with id of " + id + " not found.");
         }
 
-        return catFood.get();
+        return new ResponseEntity<>(catFood.get(), HttpStatus.OK);
     }
 
     @PostMapping("/products")
-    public CatFood addCatFood(@RequestBody CatFood catFood) {
+    public ResponseEntity<CatFood> addCatFood(@RequestBody CatFood catFood) {
 
         catFood.setId(0L);
         CatFood savedCatFood = catFoodService.save(catFood);
 
-        return savedCatFood;
+        return new ResponseEntity<>(savedCatFood, HttpStatus.CREATED);
     }
 
     @PutMapping("/products/{id}")
-    public CatFood updateCatFood(@RequestBody CatFood catFood, @PathVariable Long id) {
+    public ResponseEntity<CatFood> updateCatFood(@RequestBody CatFood catFood, @PathVariable Long id) {
 
         Optional<CatFood> foundCatFood = catFoodService.findById(id);
 
@@ -58,36 +60,38 @@ public class CatFoodController {
             catFoodService.save(catFood);
         }
 
-        return catFood;
+        return new ResponseEntity<>(catFood, HttpStatus.OK);
     }
 
     @DeleteMapping("/products/{id}")
-    public void deleteCatFood(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCatFood(@PathVariable Long id) {
 
         catFoodService.deleteById(id);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/products/search/findByTypeId")
-    public Iterable<CatFood> getCatFoodItemsOfType(@RequestParam("id") Long typeId) {
+    public ResponseEntity<Iterable<CatFood>> getCatFoodItemsOfType(@RequestParam("id") Long typeId) {
 
         Iterable<CatFood> catFoodItemsOfType = catFoodService.findByTypeId(typeId);
 
-        return catFoodItemsOfType;
+        return new ResponseEntity<>(catFoodItemsOfType, HttpStatus.OK);
     }
 
     @GetMapping("/products/search/findByName")
-    public Iterable<CatFood> getCatFoodItemsByName(@RequestParam("name") String name) {
+    public ResponseEntity<Iterable<CatFood>> getCatFoodItemsByName(@RequestParam("name") String name) {
 
         Iterable<CatFood> foundCatFoodItems = catFoodService.findByName(name);
 
-        return foundCatFoodItems;
+        return new ResponseEntity<>(foundCatFoodItems, HttpStatus.OK);
     }
 
     @GetMapping("/products/search/findByRating")
-    public Iterable<CatFood> getCatFoodItemsOrderedByRating() {
+    public ResponseEntity<Iterable<CatFood>> getCatFoodItemsOrderedByRating() {
 
         Iterable<CatFood> catFoodItems = catFoodService.findAllOrderByRating();
 
-        return catFoodItems;
+        return new ResponseEntity<>(catFoodItems, HttpStatus.OK);
     }
 }

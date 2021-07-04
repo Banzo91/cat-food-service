@@ -2,6 +2,8 @@ package com.banzo.catfood.controller;
 
 import com.banzo.catfood.model.CatFoodType;
 import com.banzo.catfood.service.CatFoodTypeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +21,10 @@ public class CatFoodTypeController {
     }
 
     @GetMapping("/product-types")
-    Iterable<CatFoodType> getCatFoodTypes() {
+    public ResponseEntity<Iterable<CatFoodType>> getCatFoodTypes() {
 
         Iterable<CatFoodType> catFoodTypes = catFoodTypeService.findAll();
 
-        return catFoodTypes;
+        return new ResponseEntity<>(catFoodTypes, HttpStatus.OK);
     }
 }
