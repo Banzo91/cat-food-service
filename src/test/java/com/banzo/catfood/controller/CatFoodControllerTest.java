@@ -75,7 +75,7 @@ class CatFoodControllerTest {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(catFoodJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
